@@ -347,28 +347,42 @@ btnLoan.addEventListener('click', function (e) {
 
 // ----- highest deposit ----
 const mostDeposit = function (acc) {
-  let largestDeposit = acc.movements[0];
-  acc.movements.forEach((_, i) => {
-    if (acc.movements[i] > largestDeposit) largestDeposit = acc.movements[i];
+  // get the deposits
+  const positiveValues = acc.movements.filter(item => item >= 1);
+  let largestDeposit = positiveValues[0];
+  // set the highest deposit
+  positiveValues.forEach((_, i) => {
+    if (positiveValues[i] > largestDeposit) largestDeposit = positiveValues[i];
   });
-  labelHighestValue.textContent = formatCurrency(
-    largestDeposit,
-    acc.locale,
-    acc.currency
-  );
+  // dipslay transfer
+  if (positiveValues.length >= 1) {
+    labelHighestValue.textContent = formatCurrency(
+      largestDeposit,
+      acc.locale,
+      acc.currency
+    );
+  } else
+    labelHighestValue.textContent = formatCurrency(0, acc.locale, acc.currency);
 };
 // ---- highest withdrawal ----
 const mostWithdraw = function (acc) {
-  let largestWithdraw = acc.movements[0];
-  acc.movements.forEach((_, i) => {
-    if (acc.movements[i] < largestWithdraw) largestWithdraw = acc.movements[i];
+  // get the widthdraws
+  const negativeValues = acc.movements.filter(item => item < 0);
+  let largestWithdraw = negativeValues[0];
+  // set the highest withdrawal
+  negativeValues.forEach((_, i) => {
+    if (negativeValues[i] < largestWithdraw)
+      largestWithdraw = negativeValues[i];
   });
-  console.log(largestWithdraw);
-  labelLeastValue.textContent = formatCurrency(
-    largestWithdraw,
-    acc.locale,
-    acc.currency
-  );
+  // diplay transfer
+  if (negativeValues.length >= 1) {
+    labelLeastValue.textContent = formatCurrency(
+      largestWithdraw,
+      acc.locale,
+      acc.currency
+    );
+  } else
+    labelLeastValue.textContent = formatCurrency(0, acc.locale, acc.currency);
 };
 
 // ------------------ Button Close Account -------------------------
