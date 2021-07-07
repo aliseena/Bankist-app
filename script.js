@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -45,41 +45,73 @@ const account2 = {
   currency: 'USD',
   locale: 'en-US',
 };
+let account3 = {};
+// new Object
+const Person = function (
+  key,
+  owner,
+  pin,
+  username,
+  movements,
+  interestRate,
+  movementsDates,
+  currency,
+  locale,
+  determiner
+) {
+  this.key = key;
+  this.owner = owner;
+  this.pin = pin;
+  this.username = username;
+  this.movements = movements;
+  this.interestRate = interestRate;
+  this.movementsDates = movementsDates;
+  this.currency = currency;
+  this.locale = locale;
+  this.determiner = determiner;
+};
 
-const accounts = [account1, account2];
+let accounts = [account1, account2];
 
 /////////////////////////////////////////////////
 // Elements
-const labelWelcome = document.querySelector('.welcome');
-const labelDate = document.querySelector('.date');
-const labelBalance = document.querySelector('.balance__value');
-const labelSumIn = document.querySelector('.summary__value--in');
-const labelSumOut = document.querySelector('.summary__value--out');
-const labelSumInterest = document.querySelector('.summary__value--interest');
-const labelTimer = document.querySelector('.timer');
-const labelHighestValue = document.querySelector('.highest__value');
-const labelLeastValue = document.querySelector('.least__value');
+const labelWelcome = document.querySelector('.welcome'),
+  labelDate = document.querySelector('.date'),
+  labelBalance = document.querySelector('.balance__value'),
+  labelSumIn = document.querySelector('.summary__value--in'),
+  labelSumOut = document.querySelector('.summary__value--out'),
+  labelSumInterest = document.querySelector('.summary__value--interest'),
+  labelTimer = document.querySelector('.timer'),
+  labelHighestValue = document.querySelector('.highest__value'),
+  labelLeastValue = document.querySelector('.least__value');
 
-const containerApp = document.querySelector('.app');
-const containerMovements = document.querySelector('.movements');
-const movementsRow = document.querySelector('.movements__row');
+const containerApp = document.querySelector('.app'),
+  containerMovements = document.querySelector('.movements'),
+  movementsRow = document.querySelector('.movements__row');
 
-const btnLogin = document.querySelector('.login__btn');
-const btnTransfer = document.querySelector('.form__btn--transfer');
-const btnLoan = document.querySelector('.form__btn--loan');
-const btnClose = document.querySelector('.form__btn--close');
-const btnSort = document.querySelector('.btn--sort');
+const btnLogin = document.querySelector('.login__btn'),
+  btnTransfer = document.querySelector('.form__btn--transfer'),
+  btnLoan = document.querySelector('.form__btn--loan'),
+  btnClose = document.querySelector('.form__btn--close'),
+  btnSort = document.querySelector('.btn--sort');
 
-const inputLoginUsername = document.querySelector('.login__input--user');
-const inputLoginPin = document.querySelector('.login__input--pin');
-const inputTransferTo = document.querySelector('.form__input--to');
-const inputTransferAmount = document.querySelector('.form__input--amount');
-const inputLoanAmount = document.querySelector('.form__input--loan-amount');
-const inputCloseUsername = document.querySelector('.form__input--user');
-const inputClosePin = document.querySelector('.form__input--pin');
+const inputLoginUsername = document.querySelector('.login__input--user'),
+  inputLoginPin = document.querySelector('.login__input--pin'),
+  inputTransferTo = document.querySelector('.form__input--to'),
+  inputTransferAmount = document.querySelector('.form__input--amount'),
+  inputLoanAmount = document.querySelector('.form__input--loan-amount'),
+  inputCloseUsername = document.querySelector('.form__input--user'),
+  inputClosePin = document.querySelector('.form__input--pin');
+
+// sign up
+const signupBtn = document.querySelector('.createAccount'),
+  userName = document.querySelector('.username'),
+  userPass = document.querySelector('.userpass'),
+  confirmPasss = document.querySelector('.passconfirm'),
+  modal = document.querySelector('.modal'),
+  loginUserInfo = document.querySelector('.login_username');
 
 /////////////////////////////////////////////////
-
 // Functions
 // ------- Display Transfer Dates -------
 const displayMovementsDate = function (locale, date) {
@@ -121,7 +153,6 @@ const displayMovements = (acc, sort = false) => {
     const displayDate = displayMovementsDate(acc.locale, date);
     // Format number
     const formatNum = formatCurrency(mov, acc.locale, acc.currency);
-
     // Movements template
     const html = `
       <div class="movements__row">
@@ -201,6 +232,14 @@ const createUsernames = function (accs) {
   });
 };
 createUsernames(accounts);
+// username for new account
+const loginUsername = newAcc =>
+  newAcc
+    .toLowerCase()
+    .split(' ')
+    .map(name => name[0])
+    .join('');
+// returns Ali Haidari ---> ah
 
 const updateUI = function (acc) {
   // Display movements
@@ -239,24 +278,25 @@ const startTimeOut = () => {
   return logoutTimer;
 };
 ///////////////////////////////////////
+// get localstorage
+const getLocalStorage = key => JSON.parse(localStorage.getItem(key));
 // Event handlers
 let currentAccount, logoutTimer;
-
-// ---------------- Loging In User ----------------
+// ---------------- Log in ----------------
 btnLogin.addEventListener('click', function (e) {
-  // Prevent default submitting
   e.preventDefault();
-
-  currentAccount = accounts.find(
-    acc => acc.username === inputLoginUsername.value
-  );
-
+  account3 = getLocalStorage(inputLoginUsername.value);
+  accounts.push(account3);
+  currentAccount = accounts.find(acc => {
+    if (acc) return acc.username === inputLoginUsername.value;
+  });
   if (currentAccount?.pin === +inputLoginPin.value) {
     // Display UI and message
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(' ')[0]
     }`;
-    containerApp.style.opacity = 100;
+    containerApp.style.opacity = 1;
+    document.querySelector('.signup__btn').style.display = 'none';
     // Display current date
     const now = new Date();
     // Options for displaying date
@@ -272,13 +312,13 @@ btnLogin.addEventListener('click', function (e) {
     labelDate.textContent = new Intl.DateTimeFormat(locale, dateOptins).format(
       now
     );
+
     if (logoutTimer) clearInterval(logoutTimer);
     logoutTimer = startTimeOut();
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
-
     // Update UI
     updateUI(currentAccount);
     // most deposit
@@ -290,12 +330,17 @@ btnLogin.addEventListener('click', function (e) {
 // --------------------- Transfer button --------------------
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
-  const amount = +inputTransferAmount.value;
-  const receiverAcc = accounts.find(
-    acc => acc.username === inputTransferTo.value
-  );
-  inputTransferAmount.value = inputTransferTo.value = '';
+  account3 = getLocalStorage(inputTransferTo.value);
+  accounts = accounts.filter(val => {
+    return val !== null;
+  });
+  accounts.push(account3);
 
+  const amount = +inputTransferAmount.value;
+  const receiverAcc = accounts.find(acc => {
+    return acc.username === inputTransferTo.value;
+  });
+  inputTransferAmount.value = inputTransferTo.value = '';
   if (
     amount > 0 &&
     receiverAcc &&
@@ -304,6 +349,7 @@ btnTransfer.addEventListener('click', function (e) {
   ) {
     // Doing the transfer
     currentAccount.movements.push(-amount);
+    console.log(receiverAcc);
     receiverAcc.movements.push(amount);
     // Create a transfer date
     currentAccount.movementsDates.push(new Date().toISOString());
@@ -324,7 +370,6 @@ btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
 
   const amount = +inputLoanAmount.value;
-
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     setTimeout(() => {
       // Add movement
@@ -385,33 +430,115 @@ const mostWithdraw = function (acc) {
     labelLeastValue.textContent = formatCurrency(0, acc.locale, acc.currency);
 };
 
-// ------------------ Button Close Account -------------------------
+// ------------------ Close Account -------------------------
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
-
-  if (
-    inputCloseUsername.value === currentAccount.username &&
-    +inputClosePin.value === currentAccount.pin
-  ) {
+  function deleteAccount() {
     const index = accounts.findIndex(
       acc => acc.username === currentAccount.username
     );
-    console.log(index);
-    // .indexOf(23)
-
     // Delete account
     accounts.splice(index, 1);
-
     // Hide UI
     containerApp.style.opacity = 0;
+  }
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    !currentAccount.determiner &&
+    +inputClosePin.value === currentAccount.pin
+  ) {
+    deleteAccount();
+  }
+  // localstorage clear
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    currentAccount.determiner &&
+    +inputClosePin.value === currentAccount.pin
+  ) {
+    deleteAccount();
+    localStorage.removeItem(currentAccount.username);
+    location.reload();
   }
 
   inputCloseUsername.value = inputClosePin.value = '';
 });
 
+// ---------- sign up -----------
+// random movements-array
+const randomArray = (length, max) =>
+  [...new Array(length)].map(() => Math.round(Math.random() * max));
+// random interest-rate
+const randomInterestRate = () => (Math.random() * 1.5).toFixed(2);
+// random date
+const randomDate = length =>
+  [...new Array(length)].map(() => new Date(Date.now()).toISOString());
+
+const setTolocalStorage = (name, pass) =>
+  localStorage.setItem(name, JSON.stringify(pass));
+
+const singUp = () => {
+  if (userName.value !== '' && +userPass.value === +confirmPasss.value) {
+    // create new object
+    const newUser = new Person(
+      userName.value,
+      userName.value,
+      +userPass.value,
+      loginUsername(userName.value),
+      randomArray(5, 1000),
+      +randomInterestRate(),
+      randomDate(5),
+      'USD',
+      'en-us',
+      'ls-account'
+    );
+    // prettier-ignore
+    const {
+        key,owner, pin,username, movements,interestRate,movementsDates,currency,locale,determiner} = newUser;
+    const prevUser = getLocalStorage(loginUsername(userName.value));
+    if (
+      prevUser !== null &&
+      prevUser.username === loginUsername(userName.value)
+    ) {
+      alert('Please choose another user name ;)');
+      return;
+    }
+    if (userName.value.indexOf(' ') === -1) {
+      alert('Last name is required');
+      return;
+    }
+    // set to localstorage
+    if (
+      +userPass.value.length >= 3 <= 8 &&
+      userName.value.indexOf(' ') !== -1
+    ) {
+      JSON.stringify(
+        setTolocalStorage(loginUsername(key), {
+          owner,
+          pin,
+          username,
+          movements,
+          interestRate,
+          movementsDates,
+          currency,
+          locale,
+          determiner,
+        })
+      );
+      account3 = getLocalStorage(loginUsername(userName.value));
+      accounts.push(account3);
+      userName.value = userPass.value = confirmPasss.value = '';
+      // bootstrap 5 modal
+      $('#exampleModal').modal('hide');
+    } else {
+      alert('Password must be between 4 and 8 characters ;)');
+    }
+  }
+};
+signupBtn.addEventListener('click', e => singUp());
+
+// ----- Sort transfers -----
 let sorted = false;
-btnSort.addEventListener('click', function (e) {
-  e.preventDefault();
+btnSort.addEventListener('click', function () {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });

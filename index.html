@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="shortcut icon" type="image/png" href="/icon.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
 
     <link
       href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap"
@@ -19,6 +25,7 @@
     <nav>
       <p class="welcome">Log in to get started</p>
       <img src="logo.png" alt="Logo" class="logo" />
+
       <form class="login">
         <input
           type="text"
@@ -29,13 +36,88 @@
         <input
           type="password"
           placeholder="PIN"
-          maxlength="4"
+          maxlength="8"
           class="login__input login__input--pin"
         />
-        <button class="login__btn">&rarr;</button>
+        <button class="login__btn">&rarr; Login</button>
+        <button
+          type="button"
+          class="signup__btn"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          class=""
+        >
+          Sign up
+        </button>
       </form>
     </nav>
 
+    <!-- Modal -->
+    <div
+      class="modal fade text-center"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Sign up form</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="signup">
+              <div class="row">
+                <form action="">
+                  <div class="form__container">
+                    <input
+                      class="signup__input username"
+                      type="text"
+                      placeholder="First Name & last Name are required..."
+                    />
+                    <br />
+                    <h5 class="login_username text-info py-3">
+                      Your login username can be like so - Jessy Williams -> (
+                      jw )
+                    </h5>
+                    <input
+                      class="signup__input userpass"
+                      type="password"
+                      placeholder="Your Pin"
+                    />
+                    <br />
+                    <input
+                      class="signup__input passconfirm"
+                      type="password"
+                      placeholder="Confirm Your Pin"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger px-5 py-3"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button class="signup__btn createAccount">
+              &rarr; Create Account
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal end -->
     <main class="app">
       <!-- BALANCE -->
       <div class="balance">
@@ -54,7 +136,6 @@
           <div class="movements__type movements__type--deposit">2 deposit</div>
           <div class="movements__date">3 days ago</div>
           <div class="movements__value">4 000€</div>
-
         </div>
         <div class="movements__row">
           <div class="movements__type movements__type--withdrawal">
@@ -114,8 +195,12 @@
         </form>
       </div>
       <div class="operation">
-        <h2 class="deposit__value">Highest desposit: <span class="highest__value"></span></h2>
-        <h2 class="withdraw__value">Highest withdrawal: <span class="least__value"></span></h2>
+        <h2 class="deposit__value">
+          Highest desposit: <span class="highest__value"></span>
+        </h2>
+        <h2 class="withdraw__value">
+          Highest withdrawal: <span class="least__value"></span>
+        </h2>
       </div>
 
       <!-- LOGOUT TIMER -->
@@ -124,14 +209,28 @@
       </p>
       <!-- build by -->
       <div>
-        <h3 class="build">Built with 🤍 by <a target="_blank" href="https://twitter.com/Ali_21O">ali</a></h3>
+        <h3 class="build">
+          Built with 🤍 by
+          <a target="_blank" href="https://twitter.com/Ali_21O">ali</a>
+        </h3>
       </div>
     </main>
 
-    <!-- <footer>
-      &copy; by Jonas Schmedtmann. Don't claim as your own :)
-    </footer> -->
-
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.js"
+      integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous"
+    ></script>
     <script src="script.js"></script>
   </body>
 </html>

@@ -68,11 +68,15 @@ nav {
 
 .login__btn {
   border: none;
-  background: none;
-  font-size: 2.2rem;
-  color: inherit;
   cursor: pointer;
   transition: all 0.3s;
+  padding: 0.8rem 2rem;
+  border: none;
+  font-size: 1.7rem;
+  border-radius: 3px;
+  outline: 0;
+  background: #ffba1e;
+  color: white;
 }
 
 .login__btn:hover,
@@ -82,7 +86,40 @@ nav {
   outline: none;
   color: #777;
 }
+/* sign up form  */
 
+.signup {
+  /* transform: translateY(-40rem); */
+  z-index: 20000;
+  /* display: none; */
+}
+.signup__input {
+  padding: 0.6rem 1rem;
+  font-size: 1.3rem;
+
+  border: 1px solid #feb93c;
+  outline: none;
+  width: 70%;
+  border-radius: 3px;
+  margin-bottom: 2rem;
+}
+.signup__btn {
+  margin-left: 3px;
+  padding: 0.6rem 1rem;
+  border: none;
+  font-size: 1.6rem;
+  border-radius: 3px;
+  outline: 0;
+  cursor: pointer;
+  background: #ffba1e;
+  color: white;
+}
+.signup__btn:hover,
+.signup__btn:focus {
+  outline: none;
+  border: none;
+  color: white;
+}
 /* MAIN */
 .app {
   position: relative;

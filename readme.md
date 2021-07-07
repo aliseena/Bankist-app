@@ -8,6 +8,7 @@ A very simple banking simulation web-based app -
 
 - DEMO - https://fancy-bankist.netlify.app/
 - Login with static accounts
+- Sign up with localstorage
 - Ability to transfer money from one account to another
 - Ability to get a loan
 - Sortable transfer history
