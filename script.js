@@ -331,9 +331,7 @@ btnLogin.addEventListener('click', function (e) {
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
   account3 = getLocalStorage(inputTransferTo.value);
-  accounts = accounts.filter(val => {
-    return val !== null;
-  });
+  accounts = accounts.filter(val => val !== null);
   accounts.push(account3);
 
   const amount = +inputTransferAmount.value;
