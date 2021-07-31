@@ -187,7 +187,7 @@ const calcDisplayBalance = function (acc) {
     acc.currency
   );
 };
-// -----------------Calculate user's summary - INCOME, WITHDRAWAL, INTEREST RATE -------
+// ----------------- Calculate user's summary - INCOME, WITHDRAWAL, INTEREST RATE -------
 const calcDisplaySummary = function (acc) {
   // income
   const incomes = acc.movements
@@ -318,7 +318,7 @@ btnLogin.addEventListener('click', function (e) {
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
-    inputLoginPin.blur();
+    inputLoginPin.focus();
     // Update UI
     updateUI(currentAccount);
     // most deposit
@@ -345,16 +345,31 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.balance >= amount &&
     receiverAcc?.username !== currentAccount.username
   ) {
-    // Doing the transfer
-    currentAccount.movements.push(-amount);
-    console.log(receiverAcc);
-    receiverAcc.movements.push(amount);
-    // Create a transfer date
-    currentAccount.movementsDates.push(new Date().toISOString());
-    receiverAcc.movementsDates.push(new Date().toISOString());
-    // highest deposit update
+    // transfer
+    if (currentAccount.determiner) {
+      currentAccount.movements.push(-amount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      JSON.stringify(
+        // prettier-ignore
+        setTolocalStorage(currentAccount.username, currentAccount)
+      );
+    }
+    if (receiverAcc.determiner) {
+      receiverAcc.movements.push(amount);
+      receiverAcc.movementsDates.push(new Date().toISOString());
+      JSON.stringify(
+        // prettier-ignore
+        setTolocalStorage(receiverAcc.username, receiverAcc)
+      );
+    } else {
+      currentAccount.movements.push(-amount);
+      receiverAcc.movements.push(amount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      receiverAcc.movementsDates.push(new Date().toISOString());
+    }
+    // deposit update
     mostDeposit(currentAccount);
-    // highest withdrawal
+    //  withdrawal
     mostWithdraw(currentAccount);
     // reset timer
     clearInterval(logoutTimer);
@@ -366,7 +381,6 @@ btnTransfer.addEventListener('click', function (e) {
 // ------------------- Loan Button ----------------
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
-
   const amount = +inputLoanAmount.value;
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     setTimeout(() => {
@@ -457,7 +471,6 @@ btnClose.addEventListener('click', function (e) {
     localStorage.removeItem(currentAccount.username);
     location.reload();
   }
-
   inputCloseUsername.value = inputClosePin.value = '';
 });
 
@@ -474,7 +487,7 @@ const randomDate = length =>
 const setTolocalStorage = (name, pass) =>
   localStorage.setItem(name, JSON.stringify(pass));
 
-const singUp = () => {
+const signUp = () => {
   if (userName.value !== '' && +userPass.value === +confirmPasss.value) {
     // create new object
     const newUser = new Person(
@@ -510,17 +523,8 @@ const singUp = () => {
       userName.value.indexOf(' ') !== -1
     ) {
       JSON.stringify(
-        setTolocalStorage(loginUsername(key), {
-          owner,
-          pin,
-          username,
-          movements,
-          interestRate,
-          movementsDates,
-          currency,
-          locale,
-          determiner,
-        })
+        // prettier-ignore
+        setTolocalStorage(loginUsername(key), {owner,pin,username,movements,interestRate,movementsDates,currency,locale,determiner,})
       );
       account3 = getLocalStorage(loginUsername(userName.value));
       accounts.push(account3);
@@ -532,8 +536,7 @@ const singUp = () => {
     }
   }
 };
-signupBtn.addEventListener('click', e => singUp());
-
+signupBtn.addEventListener('click', e => signUp());
 // ----- Sort transfers -----
 let sorted = false;
 btnSort.addEventListener('click', function () {
