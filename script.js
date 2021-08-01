@@ -244,16 +244,12 @@ const loginUsername = newAcc =>
 const updateUI = function (acc) {
   // Display movements
   displayMovements(acc);
-
   // Display balance
   calcDisplayBalance(acc);
-
   // Display summary
   calcDisplaySummary(acc);
 };
-
 // -------- Logout timer -------------
-
 const startTimeOut = () => {
   let time = 600;
   const tick = () => {
@@ -318,7 +314,7 @@ btnLogin.addEventListener('click', function (e) {
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
-    inputLoginPin.focus();
+    inputLoginUsername.focus();
     // Update UI
     updateUI(currentAccount);
     // most deposit
@@ -519,7 +515,7 @@ const signUp = () => {
     }
     // set to localstorage
     if (
-      +userPass.value.length >= 3 <= 8 &&
+      +userPass.value.length >= 4 <= 8 &&
       userName.value.indexOf(' ') !== -1
     ) {
       JSON.stringify(
