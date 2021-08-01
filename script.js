@@ -335,6 +335,28 @@ btnTransfer.addEventListener('click', function (e) {
     return acc.username === inputTransferTo.value;
   });
   inputTransferAmount.value = inputTransferTo.value = '';
+  const currTransfer = () => {
+    currentAccount.movements.push(-amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
+    JSON.stringify(
+      // prettier-ignore
+      setTolocalStorage(currentAccount.username, currentAccount)
+    );
+  };
+  const recTransfer = () => {
+    receiverAcc.movements.push(amount);
+    receiverAcc.movementsDates.push(new Date().toISOString());
+    JSON.stringify(
+      // prettier-ignore
+      setTolocalStorage(receiverAcc.username, receiverAcc)
+    );
+  };
+  const staticTranfers = () => {
+    currentAccount.movements.push(-amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiverAcc.movements.push(amount);
+    receiverAcc.movementsDates.push(new Date().toISOString());
+  };
   if (
     amount > 0 &&
     receiverAcc &&
@@ -342,27 +364,9 @@ btnTransfer.addEventListener('click', function (e) {
     receiverAcc?.username !== currentAccount.username
   ) {
     // transfer
-    if (currentAccount.determiner) {
-      currentAccount.movements.push(-amount);
-      currentAccount.movementsDates.push(new Date().toISOString());
-      JSON.stringify(
-        // prettier-ignore
-        setTolocalStorage(currentAccount.username, currentAccount)
-      );
-    }
-    if (receiverAcc.determiner) {
-      receiverAcc.movements.push(amount);
-      receiverAcc.movementsDates.push(new Date().toISOString());
-      JSON.stringify(
-        // prettier-ignore
-        setTolocalStorage(receiverAcc.username, receiverAcc)
-      );
-    } else {
-      currentAccount.movements.push(-amount);
-      receiverAcc.movements.push(amount);
-      currentAccount.movementsDates.push(new Date().toISOString());
-      receiverAcc.movementsDates.push(new Date().toISOString());
-    }
+    if (currentAccount.determiner) currTransfer();
+    if (receiverAcc.determiner) recTransfer();
+    if (!currentAccount.determiner && !receiverAcc.determiner) staticTranfers();
     // deposit update
     mostDeposit(currentAccount);
     //  withdrawal
