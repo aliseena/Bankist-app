@@ -515,7 +515,8 @@ const signUp = () => {
     }
     // set to localstorage
     if (
-      +userPass.value.length >= 4 <= 8 &&
+      +userPass.value.length >= 4 &&
+      +userPass.value.length <= 8 &&
       userName.value.indexOf(' ') !== -1
     ) {
       JSON.stringify(
