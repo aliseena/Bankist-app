@@ -46,30 +46,6 @@ const account2 = {
   locale: 'en-US',
 };
 let account3 = {};
-// new Object
-const Person = function (
-  key,
-  owner,
-  pin,
-  username,
-  movements,
-  interestRate,
-  movementsDates,
-  currency,
-  locale,
-  determiner
-) {
-  this.key = key;
-  this.owner = owner;
-  this.pin = pin;
-  this.username = username;
-  this.movements = movements;
-  this.interestRate = interestRate;
-  this.movementsDates = movementsDates;
-  this.currency = currency;
-  this.locale = locale;
-  this.determiner = determiner;
-};
 
 let accounts = [account1, account2];
 
@@ -110,6 +86,31 @@ const signupBtn = document.querySelector('.createAccount'),
   confirmPasss = document.querySelector('.passconfirm'),
   modal = document.querySelector('.modal'),
   loginUserInfo = document.querySelector('.login_username');
+// function constructor
+// new Object
+const Person = function (
+  key,
+  owner,
+  pin,
+  username,
+  movements,
+  interestRate,
+  movementsDates,
+  currency,
+  locale,
+  determiner
+) {
+  this.key = key;
+  this.owner = owner;
+  this.pin = pin;
+  this.username = username;
+  this.movements = movements;
+  this.interestRate = interestRate;
+  this.movementsDates = movementsDates;
+  this.currency = currency;
+  this.locale = locale;
+  this.determiner = determiner;
+};
 
 /////////////////////////////////////////////////
 // Functions
