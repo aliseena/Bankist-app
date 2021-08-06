@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -169,6 +169,9 @@ const displayMovements = (acc, sort = false) => {
     const deleteButton = document.querySelector('.movements__delete');
     deleteButton.addEventListener('click', () => {
       movs.splice(i, 1);
+      currentAccount.movementsDates.splice(i, i);
+      if (currentAccount.determiner)
+        setTolocalStorage(currentAccount.username, currentAccount);
       // highest deposit
       mostDeposit(currentAccount);
       // highest widthdrawal
@@ -386,6 +389,10 @@ btnLoan.addEventListener('click', function (e) {
     setTimeout(() => {
       // Add movement
       currentAccount.movements.push(amount);
+      if (currentAccount.determiner) {
+        currentAccount.movementsDates.push(new Date().toISOString());
+        setTolocalStorage(currentAccount.username, currentAccount);
+      }
       // Loan date
       currentAccount.movementsDates.push(new Date().toISOString());
       // reset timer
@@ -537,7 +544,7 @@ const signUp = () => {
     }
   }
 };
-signupBtn.addEventListener('click', e => signUp());
+signupBtn.addEventListener('click', () => signUp());
 // ----- Sort transfers -----
 let sorted = false;
 btnSort.addEventListener('click', function () {
