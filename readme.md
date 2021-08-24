@@ -1,10 +1,10 @@
-## Bankist app
+# Bankist app
 
 A very simple banking simulation web-based app -
 
 # Remember: it's all static accounts, not real - login usernames and passwords are mentioned at the bottom
 
-## Project Specifications
+# Project Specifications
 
 - DEMO - https://fancy-bankist.netlify.app/
 - Login with static accounts
@@ -16,6 +16,6 @@ A very simple banking simulation web-based app -
 - Close your account if no longer needed
 - Logs out if account stays inactive for a while
 
-# First account username and pass -> Username: jw - Pass: 1111
+# First account username and pass -> Username: js - Pass: 1111
 
 # Second account username and pass -> Username: jd - Pass: 2222

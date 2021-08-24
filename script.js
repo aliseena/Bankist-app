@@ -7,7 +7,7 @@
 // DIFFERENT DATA! Contains movement dates, currency and locale
 
 const account1 = {
-  owner: 'Jack Willson',
+  owner: 'Jonas Schmedtmann',
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
@@ -170,7 +170,7 @@ const displayMovements = (acc, sort = false) => {
     const deleteButton = document.querySelector('.movements__delete');
     deleteButton.addEventListener('click', () => {
       movs.splice(i, 1);
-      currentAccount.movementsDates.splice(i, i);
+      currentAccount.movementsDates.splice(i, 1);
       if (currentAccount.determiner)
         setTolocalStorage(currentAccount.username, currentAccount);
       // highest deposit
@@ -330,47 +330,59 @@ btnLogin.addEventListener('click', function (e) {
 // --------------------- Transfer button --------------------
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
+  // get local storage account
   account3 = getLocalStorage(inputTransferTo.value);
   accounts = accounts.filter(val => val !== null);
   accounts.push(account3);
-
+  // get input values
   const amount = +inputTransferAmount.value;
+  // find reciever acc
   const receiverAcc = accounts.find(acc => {
     return acc.username === inputTransferTo.value;
   });
   inputTransferAmount.value = inputTransferTo.value = '';
-  const currTransfer = () => {
+  // current acc transfer user
+  const currentAccFunction = () => {
     currentAccount.movements.push(-amount);
     currentAccount.movementsDates.push(new Date().toISOString());
+  };
+  // reciever user
+  const recieverAccFunction = () => {
+    receiverAcc.movements.push(amount);
+    receiverAcc.movementsDates.push(new Date().toISOString());
+  };
+  // get transfer account type
+  const currTransfer = () => {
+    currentAccFunction();
     JSON.stringify(
       // prettier-ignore
       setTolocalStorage(currentAccount.username, currentAccount)
     );
+    recieverAccFunction();
   };
   const recTransfer = () => {
-    receiverAcc.movements.push(amount);
-    receiverAcc.movementsDates.push(new Date().toISOString());
+    recieverAccFunction();
     JSON.stringify(
       // prettier-ignore
       setTolocalStorage(receiverAcc.username, receiverAcc)
     );
   };
   const staticTranfers = () => {
-    currentAccount.movements.push(-amount);
-    currentAccount.movementsDates.push(new Date().toISOString());
-    receiverAcc.movements.push(amount);
-    receiverAcc.movementsDates.push(new Date().toISOString());
+    currentAccFunction();
+    recieverAccFunction();
   };
+  // transfer functionality
   if (
     amount > 0 &&
     receiverAcc &&
     currentAccount.balance >= amount &&
     receiverAcc?.username !== currentAccount.username
   ) {
-    // transfer
+    // transfer to related account
     if (currentAccount.determiner) currTransfer();
     if (receiverAcc.determiner) recTransfer();
-    if (!currentAccount.determiner && !receiverAcc.determiner) staticTranfers();
+    if (!currentAccount.determiner && receiverAcc.determiner) staticTranfers();
+    else staticTranfers();
     // deposit update
     mostDeposit(currentAccount);
     //  withdrawal
